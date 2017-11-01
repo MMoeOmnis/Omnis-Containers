@@ -1,0 +1,45 @@
+On evClick     ;; Event Parameters - pRow( Itemreference )
+	
+	If iContainerType=1     ;; tabstrip
+		Calculate lCurrTab as $cwind.$objs.TabPane.$objs.[iCurrentObject].$currenttab
+		Do lTabNameList.$define(lTabName)
+		Calculate lTabName as $cwind.$objs.[iCurrentObject].$tabs
+		;  split the $tabs field into a list of tab names
+		While pos(',',lTabName)>0
+			Calculate lNewTabName as mid(lTabName,1,pos(',',lTabName)-1)
+			Do lTabNameList.$add(lNewTabName)
+			Calculate lTabName as mid(lTabName,pos(',',lTabName)+1,len(lTabName))
+		End While
+		Do lTabNameList.$add(lTabName)
+		
+		Do lTabNameList.$line.$assign(lCurrTab)
+		Do lTabNameList.$loadcols()
+		Calculate lMsgString as con('Enter new name for tab ',lTabName)
+		
+	Else     ;; tabpane
+		Calculate lCurrTab as $cwind.$objs.[iCurrentObject].$currenttab
+		Calculate lTabName as $cwind.$objs.[iCurrentObject].$tabcaption
+		Calculate lMsgString as con('Enter new name for tab ',lTabName)
+	End If
+	
+	;  get the new name
+	Prompt for input [lMsgString]/Change Tab Name//25 Returns lTabName (Cancel button)
+	
+	If not(msgcancelled())
+		If iContainerType=0     ;; tabpane
+			Do $cwind.$objs.[iCurrentObject].$tabcaption.$assign(lTabName)
+		Else     ;; tabstrip
+			Calculate lNewTabName as
+			Do lTabNameList.$assigncols(lTabName)
+			For lNum from 1 to lTabNameList.$linecount step 1
+				Do lTabNameList.$line.$assign(lNum)
+				Do lTabNameList.$loadcols()
+				Calculate lNewTabName as con(lNewTabName,lTabName,',')
+			End For
+			Calculate lNewTabName as mid(lNewTabName,1,len(lNewTabName)-1)     ;; strip
+			Do $cwind.$objs.TabPane.$objs.[iCurrentObject].$tabs.$assign(lNewTabName)
+			Do $cwind.$objs.TabPane.$objs.[iCurrentObject].$currenttab.$assign(lCurrTab) Returns #F
+		End If
+		
+On evRMouseDown
+	Set reference iObjectRef to $cobj

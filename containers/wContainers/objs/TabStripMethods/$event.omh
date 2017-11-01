@@ -1,0 +1,18 @@
+On evClick     ;; Event Parameters - pRow ( Itemreference )
+	Do iTabStripList.$loadcols()
+	If iTabStripList.$line=1
+		Calculate iTabShowEdge as not(iTabShowEdge)
+		Calculate lProperty as '$showedge'
+		Calculate lSetBoolean as iTabShowEdge
+	Else
+		Calculate iTabDitherBackground as not(iTabDitherBackground)
+		Calculate lProperty as '$ditherbackground'
+		Calculate lSetBoolean as iTabDitherBackground
+	End If
+	
+	Do $cwind.$objs.TabPane.$objs.[iCurrentObject].[lProperty].$assign(lSetBoolean)
+	
+	Redraw (Refresh now) {TabStrip}
+	
+On evRMouseDown
+	Set reference iObjectRef to $cobj

@@ -1,0 +1,6 @@
+On evTabSelected     ;; Event Parameters - pTabNumber ( Itemreference )
+	;  show the page pane corresponding to the tab number pressed
+	Do $cwind.$objs.TabPane.$objs.EmbeddedPagePane.$currentpage.$assign(pTabNumber)
+	
+On evRMouseDown
+	Set reference iObjectRef to $cobj

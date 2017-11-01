@@ -1,0 +1,36 @@
+On evClick     ;; Event Parameters - pRow ( Itemreference )
+	Calculate lCurrentPane as $cwind.$objs.[iCurrentObject].$currenttab
+	
+	Switch iTabRuntimeList.$line
+		Case 1
+			;  see what pane user wants
+			Prompt for input Enter Pane Number to Hide or Show/Hide or Show Pane//2 Returns lCurrentPane
+			;  see what it's current state is
+			Do $cwind.$objs.[iCurrentObject].$ispaneshown(lCurrentPane) Returns lTabShown
+			Calculate lDisplayText as pick(not(lTabShown),'kFalse','kTrue')
+			;  then not it!!
+			Do $cwind.$objs.[iCurrentObject].$showpane(lCurrentPane,pick(not(lTabShown),kFalse,kTrue)) Returns lTabShown
+			Break to end of switch
+		Case 2
+			Prompt for input Enter Pane Number to Check/Is Pane Shown?//2 Returns lCurrentPane
+			Do $cwind.$objs.[iCurrentObject].$ispaneshown(lCurrentPane) Returns lTabShown
+			OK message  (Icon) {[con("Pane ",lCurrentPane," is ",pick(lTabShown,"hidden","displayed"))]}
+			Break to end of switch
+		Case 3
+			;  see what pane user wants
+			Prompt for input Enter Pane Number to Enable or Disable/Enable or Disable Pane//2 Returns lCurrentPane
+			;  see what it's current state is
+			Do $cwind.$objs.[iCurrentObject].$ispaneenabled(lCurrentPane) Returns lTabShown
+			Calculate lDisplayText as pick(not(lTabShown),'kFalse','kTrue')
+			;  then not it!!
+			Do $cwind.$objs.[iCurrentObject].$enablepane(lCurrentPane,pick(not(lTabShown),kFalse,kTrue)) Returns lTabShown
+			Break to end of switch
+		Case 4
+			Prompt for input Enter Pane Number to Check/Is Pane Enabled?//2 Returns lCurrentPane
+			Do $cwind.$objs.[iCurrentObject].$ispaneenabled(lCurrentPane) Returns lTabEnabled
+			OK message  (Icon) {[con("Pane ",lCurrentPane," is ",pick(lTabEnabled,"not enabled","enabled"))]}
+			Break to end of switch
+	End Switch
+	
+On evRMouseDown
+	Set reference iObjectRef to $cobj

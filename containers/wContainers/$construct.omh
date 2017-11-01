@@ -1,0 +1,31 @@
+Do iTabTypeList.$define(iTabType)
+Do iTabTypeList.$add('Square Panes')
+Do iTabTypeList.$add('Default Panes')
+Do iTabTypeList.$add('Mac OS8 Panes')
+Do iTabTypeList.$add('Rounded Panes')
+Do iTabTypeList.$add('Triangle Panes')
+Do iTabTypeList.$line.$assign(1)
+Do iTabTypeList.$loadcols()
+
+Do iTabActionList.$define(iTabAction)
+Do iTabActionList.$add('Add Tab or Pane')
+Do iTabActionList.$add('Remove Tab or Pane')
+Do iTabActionList.$line.$assign(1)
+Do iTabActionList.$loadcols()
+
+Do iTabRuntimeList.$define(iTabRuntime)
+Do iTabRuntimeList.$add('Show Pane')
+Do iTabRuntimeList.$add('Is Pane Shown')
+Do iTabRuntimeList.$add('Enable Pane')
+Do iTabRuntimeList.$add('Is Pane Enabled')
+Do iTabRuntimeList.$line.$assign(1)
+Do iTabRuntimeList.$loadcols()
+
+Do iTabStripList.$define(iTabStripAttribute)
+Do iTabStripList.$add('Show Edge')
+Do iTabStripList.$add('Dither Background')
+Do iTabStripList.$line.$assign(1)
+Do iTabStripList.$loadcols()
+
+Calculate iCurrentObject as 'TabPane'
+Calculate iContainerType as 0

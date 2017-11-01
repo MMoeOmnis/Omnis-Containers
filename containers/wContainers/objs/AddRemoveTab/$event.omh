@@ -1,0 +1,63 @@
+On evClick     ;; Event Parameters - pRow ( Itemreference )
+	Do iTabActionList.$loadcols()
+	
+	If iContainerType=0     ;; tabpane
+		Set reference lTabPaneRef to $cwind.$objs.[iCurrentObject]
+	Else     ;; tabstrip or pagepane
+		Set reference lTabPaneRef to $cwind.$objs.TabPane.$objs.[iCurrentObject]
+	End If
+	
+	If iTabActionList.$line=1     ;; add tab/strip/pane
+		
+		If iContainerType=0     ;; tabpane
+			Do lTabPaneRef.$tabcount.$assign(lTabPaneRef.$tabcount+1) Returns #F
+			
+		Else If iContainerType=1     ;; tabstrip
+			Calculate lTabText as lTabPaneRef.$tabs
+			Calculate lTabText as con(lTabText,',NewTab')
+			Do lTabPaneRef.$tabs.$assign(lTabText)
+			
+		Else     ;; pagepane
+			Do lTabPaneRef.$pagecount.$assign(lTabPaneRef.$pagecount+1) Returns #F
+			;  create a label to show we are on the new pane
+			Do lTabPaneRef.$bobjs.$add(lTabPaneRef.$pagecount,kLabel,27,40,13,120) Returns lTextRef
+			Do lTextRef.$backcolor.$assign(kColor3DFace)
+			Do lTextRef.$text.$assign(con('Pane',lTabPaneRef.$pagecount)) Returns #F
+			Do lTextRef.$fontsize.$assign(8)
+			;
+			Do lTabPaneRef.$currentpage.$assign(lTabPaneRef.$pagecount)
+		End If
+		
+	Else     ;; remove tab/strip/pane
+		
+		If iContainerType=0     ;; tabpane
+			Do lTabPaneRef.$tabcount.$assign(lTabPaneRef.$tabcount-1) Returns #F
+			
+		Else If iContainerType=1     ;; tabstrip
+			;  remove last tabstrip
+			Calculate lTabText as lTabPaneRef.$tabs
+			;  split the $tabs field into a list of tab names ignoring the last one
+			Do lTabNameList.$define(lNewTabName)
+			While pos(',',lTabText)>0
+				Calculate lNewTabName as mid(lTabText,1,pos(',',lTabText)-1)
+				Do lTabNameList.$add(lNewTabName)
+				Calculate lTabText as mid(lTabText,pos(',',lTabText)+1,len(lTabText))
+			End While
+			Calculate lTabText as
+			For lNum from 1 to lTabNameList.$linecount step 1
+				Do lTabNameList.$line.$assign(lNum)
+				Do lTabNameList.$loadcols()
+				Calculate lTabText as con(lTabText,',',lNewTabName)
+			End For
+			Calculate lTabText as mid(lTabText,2,len(lTabText))     ;; strip leading comma
+			Do lTabPaneRef.$tabs.$assign(lTabText)
+			;  force pagepane to change because of bug st/wo/814
+			Set reference lTabPaneRef to $cwind.$objs.TabPane.$objs.EmbeddedPagePane
+			Do lTabPaneRef.$currentpage.$assign(1) Returns #F
+			
+		Else     ;; pagepane
+			Do lTabPaneRef.$pagecount.$assign(lTabPaneRef.$pagecount-1) Returns #F
+		End If
+	End If
+	
+	Redraw (Refresh now) {TabStrip}

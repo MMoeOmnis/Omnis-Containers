@@ -1,0 +1,4 @@
+On evTabSelected     ;; Event Parameters - pTabNumber ( integer )
+	
+On evRMouseDown
+	Set reference iObjectRef to $cwind

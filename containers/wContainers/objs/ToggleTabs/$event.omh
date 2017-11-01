@@ -1,0 +1,8 @@
+On evClick     ;; Event Parameters - pRow( Itemreference )
+	Calculate iTabPosition as not(iTabPosition)     ;; toggle tabs position
+	
+	;  set property
+	Do $cwind.$objs.[iCurrentObject].$taborient.$assign(pick(iTabPosition,kBottomTabs,kTopTabs))
+	
+On evRMouseDown
+	Set reference iObjectRef to $cobj

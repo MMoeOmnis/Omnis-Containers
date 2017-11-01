@@ -1,0 +1,23 @@
+On evClick
+	Do iTabTypeList.$loadcols()
+	
+	Switch iTabTypeList.$line
+		Case 1
+			Calculate lTabType as kSquarePanes
+			Break to end of switch
+		Case 2
+			Calculate lTabType as kDefaultPanes
+			Break to end of switch
+		Case 3
+			Calculate lTabType as kMacOS8Panes
+			Break to end of switch
+		Case 4
+			Calculate lTabType as kRoundedPanes
+			Break to end of switch
+		Case 5
+			Calculate lTabType as kTrianglePanes
+			Break to end of switch
+	End Switch
+	
+	;  set property
+	Do $cwind.$objs.[iCurrentObject].$tabstyle.$assign(lTabType)

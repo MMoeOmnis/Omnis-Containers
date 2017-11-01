@@ -1,0 +1,14 @@
+On evClick     ;; Event Parameters - pRow ( Itemreference )
+	;  enable / disable fields
+	Do $cwind.$objs.TabStripMethods.$enabled.$assign(kTrue)
+	Do $cwind.$objs.AddRemoveTabs.$enabled.$assign(kTrue)
+	Do $cwind.$objs.ChangeTabTitle.$enabled.$assign(kTrue)
+	;
+	Do $cwind.$objs.ToggleTabs.$enabled.$assign(kFalse)
+	Do $cwind.$objs.SetTabtype.$enabled.$assign(kFalse)
+	Do $cwind.$objs.RuntimeTabMethods.$enabled.$assign(kFalse)
+	
+	Calculate iCurrentObject as 'TabStrip'
+	
+On evRMouseDown
+	Set reference iObjectRef to $cobj
